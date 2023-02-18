@@ -1,13 +1,44 @@
-import { useState } from "react";
 import "./App.css";
+import { useState } from "react";
+import { OrbitControls, PerspectiveCamera, useGLTF } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { motion } from "framer-motion-3d";
 
+
+export function Laptop(props) {
+  const { nodes, materials } = useGLTF('/laptop.glb')
+  return (
+    <group {...props} dispose={null}>
+      <group rotation={[-Math.PI / 2, 0, 0]} scale={0.03}>
+        <group position={[-0.03, 111.69, 2.84]} scale={3.37}>
+          <mesh geometry={nodes.Screen.geometry} material={materials.Namibia} position={[0.01, -33.13, -0.84]} scale={0.3} />
+          <mesh geometry={nodes.Black_Inset.geometry} material={materials['Display Rim 1']} position={[0.01, -33.13, -0.84]} scale={0.3} />
+          <mesh geometry={nodes.Rubber.geometry} material={materials['Display Rubber 1']} position={[0.01, -33.13, -0.84]} scale={0.3} />
+          <mesh geometry={nodes.Screen_Back.geometry} material={materials['Body 2']} position={[0.01, -33.13, -0.84]} scale={0.3} />
+        </group>
+        <mesh geometry={nodes.Keyboard.geometry} material={materials['Keyboard 2']} />
+        <mesh geometry={nodes.Touch_Panel.geometry} material={materials['Touch Bar 1']} />
+        <mesh geometry={nodes.Ports.geometry} material={materials['Ports 1']} />
+        <mesh geometry={nodes.Touchpad.geometry} material={materials['Touchpad 1']} />
+        <mesh geometry={nodes.Body.geometry} material={materials['Body 3']} />
+      </group>
+    </group>
+  )
+}
 
 function App() {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <div className="container">
       <div className="preview">
-
+        <Canvas>
+          <ambientLight intensity={0.8} />
+          <directionalLight color="red" position={[0, 0, 5]} />
+          <pointLight position={[10, 10, 50]} />
+          <Laptop />
+          <PerspectiveCamera makeDefault position={[0, 0, 20]} />
+          <OrbitControls />
+        </Canvas>
       </div>
       <div className="footer">
         <label className="switch">
@@ -20,7 +51,7 @@ function App() {
         </label>
       </div>
     </div>
-  
+
   );
 }
 
